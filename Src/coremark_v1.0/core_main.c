@@ -305,7 +305,11 @@ MAIN_RETURN_TYPE main(int argc, char *argv[]) {
 	ee_printf("CoreMark Size    : %lu\n",(ee_u32)results[0].size);
 	ee_printf("Total ticks      : %lu\n",(ee_u32)total_time);
 #if HAS_FLOAT
+#ifdef __GNUC__
+	ee_printf("Total time (secs): %u\n",(uint32_t)(100*time_in_secs(total_time))/100);
+#else
 	ee_printf("Total time (secs): %f\n",time_in_secs(total_time));
+#endif
 	if (time_in_secs(total_time) > 0)
 //		ee_printf("Iterations/Sec   : %f\n",default_num_contexts*results[0].iterations/time_in_secs(total_time));
 		ee_printf("Iterations/Sec   : %lu/1000\n", (uint32_t)(1000*default_num_contexts*results[0].iterations/time_in_secs(total_time)));
@@ -320,7 +324,11 @@ MAIN_RETURN_TYPE main(int argc, char *argv[]) {
 	}
 
 	ee_printf("Iterations       : %lu\n",(ee_u32)default_num_contexts*results[0].iterations);
+#if defined(__ARMCC_VERSION)
 	ee_printf("Compiler version : ARMCC %u\n",COMPILER_VERSION);
+#else
+	ee_printf("Compiler version : %s\n",COMPILER_VERSION);
+#endif
 	ee_printf("Compiler flags   : %s\n",COMPILER_FLAGS);
 #if (MULTITHREAD>1)
 	ee_printf("Parallel %s : %d\n",PARALLEL_METHOD,default_num_contexts);
@@ -343,7 +351,17 @@ MAIN_RETURN_TYPE main(int argc, char *argv[]) {
 		ee_printf("Correct operation validated. See readme.txt for run and reporting rules.\n");
 #if HAS_FLOAT
 		if (known_id==3) {
-			ee_printf("CoreMark 1.0 : %f / ARMCC %u %s",default_num_contexts*results[0].iterations/time_in_secs(total_time),COMPILER_VERSION,COMPILER_FLAGS);
+#ifdef __GNUC__
+			ee_printf("CoreMark 1.0 : %u / %s %s",
+					(uint32_t)(100*default_num_contexts*results[0].iterations/time_in_secs(total_time))/100,
+					COMPILER_VERSION,
+					COMPILER_FLAGS);
+#else
+			ee_printf("CoreMark 1.0 : %f / ARMCC %u %s",
+					default_num_contexts*results[0].iterations/time_in_secs(total_time),
+					COMPILER_VERSION,
+					COMPILER_FLAGS);
+#endif
 #if defined(MEM_LOCATION) && !defined(MEM_LOCATION_UNSPEC)
 			ee_printf(" / %s",MEM_LOCATION);
 #else

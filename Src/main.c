@@ -67,12 +67,31 @@ void SystemClock_Config(void);
 /* USER CODE END PFP */
 
 /* USER CODE BEGIN 0 */
+#if defined(__ARMCC_VERSION)
 int stdout_putchar (int ch)
 {
 	uint8_t c = ch;
 	HAL_UART_Transmit(&huart2, &c, 1, 1);
 	return ch;
 }
+#else
+int write (int fd, const void *buf, size_t count)
+{
+	for(uint32_t i=0; i<count; ++i)
+	{
+		HAL_UART_Transmit(&huart2, buf+i, 1, 1);
+	}
+	return count;
+}
+int _write (int fd, const void *buf, size_t count)
+{
+	for(uint32_t i=0; i<count; ++i)
+	{
+		HAL_UART_Transmit(&huart2, buf+i, 1, 1);
+	}
+	return count;
+}
+#endif
 /* USER CODE END 0 */
 
 int original_main(void)
@@ -119,9 +138,9 @@ int original_main(void)
 //		HAL_GPIO_TogglePin(LED_GPIO_Port, LED_Pin);		
 //		printf("%u %u %u\n", g_ADCBuf[0], g_ADCBuf[1], g_ADCBuf[2]);
 //		HAL_Delay(500);
-//  /* USER CODE END WHILE */
+  /* USER CODE END WHILE */
 
-//  /* USER CODE BEGIN 3 */
+  /* USER CODE BEGIN 3 */
 
 //  }
 	return 0;

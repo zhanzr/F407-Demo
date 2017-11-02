@@ -65,7 +65,8 @@ typedef clock_t CORE_TICKS;
  #endif
 #endif
 #ifndef COMPILER_FLAGS 
- #define COMPILER_FLAGS "--c99 -c --cpu Cortex-M4.fp -D__MICROLIB -g -O3 -Otime --apcs=interwork --split_sections" /* "Please put compiler flags here (e.g. -o3)" */
+ #define COMPILER_FLAGS "-mcpu=cortex-m4 -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16 -std=c99 -O3 -Wall -fmessage-length=0 -ffunction-sections -c -fmessage-length=0"
+/* "Please put compiler flags here (e.g. -o3)" */
 #endif
 #ifndef MEM_LOCATION 
  #define MEM_LOCATION "STACK"
