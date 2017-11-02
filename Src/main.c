@@ -75,7 +75,7 @@ int stdout_putchar (int ch)
 }
 /* USER CODE END 0 */
 
-int main(void)
+int original_main(void)
 {
 
   /* USER CODE BEGIN 1 */
@@ -108,22 +108,23 @@ int main(void)
   MX_USART2_UART_Init();
 
   /* USER CODE BEGIN 2 */
-	printf("%u Hz\n", SystemCoreClock);
+	printf("F407 Coremark @ %u Hz\n", SystemCoreClock);
 	HAL_ADC_Start_DMA(&hadc1, (uint32_t*)g_ADCBuf, 3);
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
-  while (1)
-  {
-		HAL_GPIO_TogglePin(LED_GPIO_Port, LED_Pin);		
-		printf("%u %u %u\n", g_ADCBuf[0], g_ADCBuf[1], g_ADCBuf[2]);
-		HAL_Delay(500);
-  /* USER CODE END WHILE */
+//  while (1)
+//  {
+//		HAL_GPIO_TogglePin(LED_GPIO_Port, LED_Pin);		
+//		printf("%u %u %u\n", g_ADCBuf[0], g_ADCBuf[1], g_ADCBuf[2]);
+//		HAL_Delay(500);
+//  /* USER CODE END WHILE */
 
-  /* USER CODE BEGIN 3 */
+//  /* USER CODE BEGIN 3 */
 
-  }
+//  }
+	return 0;
   /* USER CODE END 3 */
 
 }
